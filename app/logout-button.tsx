@@ -30,7 +30,7 @@ export default function LogoutButton() {
       onClick={handleLogout}
       type="button"
     >
-      {isSubmitting ? "Logging out..." : "Log out"}
+      {isSubmitting ? "退出中..." : "退出登录"}
     </button>
   );
 }

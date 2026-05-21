@@ -41,7 +41,7 @@ MVP 推荐使用 Session Cookie，不使用 JWT。
 - 上传格式：jpg / png / webp
 - 上传大小上限：5MB
 - 存储格式：webp
-- 推荐尺寸：800x800
+- 推荐尺寸：600x800
 - 压缩目标：尽量控制在 1MB 以内
 
 ## NFC 写入内容

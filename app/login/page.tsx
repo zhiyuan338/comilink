@@ -4,15 +4,15 @@ import LoginForm from "@/app/login/login-form";
 
 type LoginPageProps = {
   searchParams?: Promise<{
-    next?: string | string[];
+    returnTo?: string | string[];
   }>;
 };
 
-function normalizeNextPath(next: string | string[] | undefined) {
-  const value = Array.isArray(next) ? next[0] : next;
+function normalizeReturnTo(returnTo: string | string[] | undefined) {
+  const value = Array.isArray(returnTo) ? returnTo[0] : returnTo;
 
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/";
+    return "/me";
   }
 
   return value;
@@ -20,7 +20,7 @@ function normalizeNextPath(next: string | string[] | undefined) {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = searchParams ? await searchParams : {};
-  const nextPath = normalizeNextPath(params.next);
+  const nextPath = normalizeReturnTo(params.returnTo);
   const user = await getCurrentUser();
 
   if (user) {
