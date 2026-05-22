@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ensureInitialAdmin } from "@/app/lib/initial-admin";
 import { prisma } from "@/app/lib/prisma";
 import { getStringField, readJson } from "@/app/lib/http";
 import { verifyPassword } from "@/app/lib/password";
@@ -7,6 +8,8 @@ import { setSessionCookie } from "@/app/lib/session";
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  await ensureInitialAdmin();
+
   const body = await readJson(request);
   const qq = getStringField(body, "qq");
   const password = getStringField(body, "password", { trim: false });

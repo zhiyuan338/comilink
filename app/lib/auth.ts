@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ensureInitialAdmin } from "@/app/lib/initial-admin";
 import { prisma } from "@/app/lib/prisma";
 import { getSession } from "@/app/lib/session";
 
@@ -15,6 +16,8 @@ export const currentUserSelect = {
 export type CurrentUser = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
 
 export async function getCurrentUser() {
+  await ensureInitialAdmin();
+
   const session = await getSession();
 
   if (!session) {
@@ -72,7 +75,14 @@ export class AuthError extends Error {
 
 export function authErrorResponse(error: unknown) {
   if (error instanceof AuthError) {
-    return NextResponse.json({ error: error.message }, { status: error.status });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message,
+        error: error.message,
+      },
+      { status: error.status },
+    );
   }
 
   throw error;

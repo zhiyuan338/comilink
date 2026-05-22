@@ -26,6 +26,14 @@ export default async function AppNav() {
               >
                 Collections
               </Link>
+              {user.isAdmin ? (
+                <Link
+                  className="inline-flex h-10 items-center justify-center rounded-md border border-zinc-300 px-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-50"
+                  href="/admin"
+                >
+                  Admin
+                </Link>
+              ) : null}
               <LogoutButton />
             </>
           ) : (

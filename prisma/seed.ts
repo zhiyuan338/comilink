@@ -8,7 +8,7 @@ import {
   SocialLinkType,
 } from "../app/generated/prisma/client";
 import {
-  generateUserToken,
+  generateUniqueUserToken,
   isLegacySeedToken,
 } from "../app/lib/user-token";
 
@@ -84,19 +84,14 @@ function buildSocialLinks(
 }
 
 async function createUniqueUserToken() {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    const token = generateUserToken();
+  return generateUniqueUserToken(async (token) => {
     const existingUser = await prisma.user.findUnique({
       where: { token },
       select: { id: true },
     });
 
-    if (!existingUser) {
-      return token;
-    }
-  }
-
-  throw new Error("Could not generate a unique user token.");
+    return Boolean(existingUser);
+  });
 }
 
 async function seedEvents() {
@@ -150,7 +145,7 @@ async function seedUsers() {
     const userUpdateData: Prisma.UserUpdateInput = {
       passwordHash,
       username: `TestUser${userNumber}`,
-      isAdmin: false,
+      isAdmin: index === 1,
       isDisabled: false,
     };
 
@@ -169,7 +164,7 @@ async function seedUsers() {
             passwordHash,
             username: `TestUser${userNumber}`,
             token: await createUniqueUserToken(),
-            isAdmin: false,
+            isAdmin: index === 1,
             isDisabled: false,
           },
         });
