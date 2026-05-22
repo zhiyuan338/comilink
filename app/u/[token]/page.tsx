@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPublicUserByToken } from "@/app/lib/public-users";
+import { CollectStatusNotice } from "./collect-status";
 
 type PublicUserPageProps = {
   params: Promise<{
@@ -26,6 +27,8 @@ export default async function PublicUserPage({ params }: PublicUserPageProps) {
           <p className="text-sm font-medium text-zinc-500">ComiLink</p>
           <h1 className="mt-2 text-2xl font-semibold">{user.username}</h1>
         </section>
+
+        <CollectStatusNotice targetToken={token} />
 
         <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
           <h2 className="text-lg font-semibold">Stamp</h2>
